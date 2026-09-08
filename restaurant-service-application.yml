@@ -1,0 +1,20 @@
+# Cấu hình đã sửa đúng cho restaurant-service
+spring:
+  application:
+    name: restaurant-service # Thống nhất dạng kebab-case chữ thường
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/ # Đã thêm dấu / ở cuối
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    # Tùy chỉnh heartbeat nhanh hơn cho môi trường production nhạy cảm
+    lease-renewal-interval-in-seconds: 10 # Gửi heartbeat mỗi 10 giây
+    lease-expiration-duration-in-seconds: 30 # Hết hạn sau 30 giây nếu mất heartbeat

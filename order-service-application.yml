@@ -1,0 +1,29 @@
+# Cấu hình đề xuất cho order-service để tra cứu instance động hiệu quả
+spring:
+  application:
+    name: order-service
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 10 # Cập nhật danh sách từ Eureka mỗi 10 giây (mặc định 30s)
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+# Cấu hình Spring Cloud LoadBalancer & Retry/Circuit Breaker (Resilience4j)
+resilience4j:
+  circuitbreaker:
+    instances:
+      restaurantService:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000ms
+  retry:
+    instances:
+      restaurantService:
+        max-attempts: 3
+        wait-duration: 500ms
